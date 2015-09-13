@@ -1,0 +1,30 @@
+{
+    "name": "nicmart/live-terminal",
+    "type": "library",
+    "description": "Live data on the terminal",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolò Martini",
+            "email": "nicolo@martini.io"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "NicMart\\LiveTerminal\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NicMart\\LiveTerminal\\Test\\": "tests"
+        }
+    }
+}
+
