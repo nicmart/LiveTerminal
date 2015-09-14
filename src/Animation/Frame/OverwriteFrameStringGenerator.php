@@ -20,20 +20,41 @@ use NicMart\LiveTerminal\Transformer\MultipleLinesTransformer;
  */
 class OverwriteFrameStringGenerator implements FrameStringGenerator
 {
+    /**
+     *
+     */
+    const HIDECURSOR = "\e[?25l";
+    /**
+     *
+     */
+    const SHOWCURSOR = "\e[?25h";
+
+    /**
+     * @var array
+     */
     private $previousLines = array();
+    /**
+     * @var int
+     */
     private $previousNumberOfTerminalLines = 0;
 
     /**
      * @var MultipleLinesTransformer
      */
     private $linesTransformer;
+    /**
+     * @var bool
+     */
+    private $hideCursor;
 
     /**
      * @param MultipleLinesTransformer $linesTransformer
+     * @param bool $hideCursor
      */
-    public function __construct(MultipleLinesTransformer $linesTransformer)
+    public function __construct(MultipleLinesTransformer $linesTransformer, $hideCursor = true)
     {
         $this->linesTransformer = $linesTransformer;
+        $this->hideCursor = $hideCursor;
     }
 
     /**
@@ -63,14 +84,35 @@ class OverwriteFrameStringGenerator implements FrameStringGenerator
         $this->previousLines = $linesToPrint;
         $this->previousNumberOfTerminalLines = $numOfTerminalLines;
 
-        return $result;
+        return $this->wrapWithShowHideCursorSequences($result);
     }
 
+    /**
+     * @param $string
+     * @return string
+     */
+    private function wrapWithShowHideCursorSequences($string)
+    {
+        if (!$this->hideCursor) {
+            return $string;
+        }
+
+        return self::HIDECURSOR . $string . self::SHOWCURSOR;
+    }
+
+    /**
+     * @param $n
+     * @return string
+     */
     private function moveUp($n)
     {
         return "\e[{$n}A";
     }
 
+    /**
+     * @param $n
+     * @return string
+     */
     private function moveBack($n)
     {
         return "\e[{$n}D";
