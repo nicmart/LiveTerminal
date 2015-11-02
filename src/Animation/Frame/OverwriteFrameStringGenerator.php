@@ -42,6 +42,7 @@ class OverwriteFrameStringGenerator implements FrameStringGenerator
      * @var MultipleLinesTransformer
      */
     private $linesTransformer;
+
     /**
      * @var bool
      */
